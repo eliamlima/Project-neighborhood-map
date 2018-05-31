@@ -2,6 +2,16 @@ var map;
 // Create a new blank array for all the listing markers.
 var markers = [];
 
+//These are the locations for selected markers.
+var locations = [
+  {title: 'Rua Coberta', location: {lat: -29.378678, lng: -50.8755976}},
+  {title: 'Lago Negro', location: {lat: -29.3947927, lng: -50.878002}},
+  {title: 'Wish Serrano Resort', location: {lat: -29.3821843, lng: -50.8770579}},
+  {title: 'SuperCarros Gramado', location: {lat: -29.3617065, lng: -50.8593584}},
+  {title: 'Prawer Chocolates', location: {lat: -29.3661833, lng: -50.8617407}},
+  {title: 'Praça das Etnias', location: {lat: -29.3837249, lng: -50.8784937}}
+];
+
 function initMap() {
 
   // Constructor creates a new map - only center and zoom are required.
@@ -11,19 +21,9 @@ function initMap() {
     mapTypeControl: false
   });
 
-  // These are the real estate listings that will be shown to the user.
-  // Normally we'd have these in a database instead.
-  var locations = [
-    {title: 'Rua Coberta', location: {lat: -29.378678, lng: -50.8755976}},
-    {title: 'Lago Negro', location: {lat: -29.3947927, lng: -50.878002}},
-    {title: 'Wish Serrano Resort', location: {lat: -29.3821843, lng: -50.8770579}},
-    {title: 'SuperCarros Gramado', location: {lat: -29.3617065, lng: -50.8593584}},
-    {title: 'Prawer Chocolates', location: {lat: -29.3661833, lng: -50.8617407}},
-    {title: 'Praça das Etnias', location: {lat: -29.3837249, lng: -50.8784937}}
-  ];
   var largeInfowindow = new google.maps.InfoWindow();
 
-  // Style the markers a bit. This will be our listing marker icon.
+  // Style the markers a bit. This will be our marker icon.
   var defaultIcon = makeMarkerIcon('0091ff');
   // Create a "highlighted location" marker color for when the user
   // mouses over the marker.
@@ -116,12 +116,6 @@ function showPlaces() {
   }
   map.fitBounds(bounds);
 }
-// This function will loop through the listings and hide them all.
-function hideMarkers(markers) {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(null);
-  }
-}
 
 // This function takes in a COLOR, and then creates a new marker
 // icon of that color. The icon will be 21 px wide by 34 high, have an origin
@@ -136,3 +130,17 @@ function makeMarkerIcon(markerColor) {
     new google.maps.Size(21,34));
   return markerImage;
 }
+
+var viewModel = function() {
+  var self = this;
+  self.markersList = ko.obervableArray([
+    {title: 'Rua Coberta', location: {lat: -29.378678, lng: -50.8755976}},
+    {title: 'Lago Negro', location: {lat: -29.3947927, lng: -50.878002}},
+    {title: 'Wish Serrano Resort', location: {lat: -29.3821843, lng: -50.8770579}},
+    {title: 'SuperCarros Gramado', location: {lat: -29.3617065, lng: -50.8593584}},
+    {title: 'Prawer Chocolates', location: {lat: -29.3661833, lng: -50.8617407}},
+    {title: 'Praça das Etnias', location: {lat: -29.3837249, lng: -50.8784937}}
+  ]);
+}
+
+ko.applyBindings(new viewModel());
