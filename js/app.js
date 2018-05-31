@@ -1,16 +1,12 @@
 var map;
 // Create a new blank array for all the listing markers.
 var markers = [];
-// This global polygon variable is to ensure only ONE polygon is rendered.
-var polygon = null;
-// Create placemarkers array to use in multiple functions to have control
-// over the number of places that show.
-var placeMarkers = [];
+
 function initMap() {
 
   // Constructor creates a new map - only center and zoom are required.
   map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 40.7413549, lng: -73.9980244},
+    center: {lat: -29.3795583, lng: -50.936509},
     zoom: 13,
     mapTypeControl: false
   });
@@ -18,12 +14,12 @@ function initMap() {
   // These are the real estate listings that will be shown to the user.
   // Normally we'd have these in a database instead.
   var locations = [
-    {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
-    {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
-    {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
-    {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
-    {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
-    {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
+    {title: 'Rua Coberta', location: {lat: -29.378678, lng: -50.8755976}},
+    {title: 'Lago Negro', location: {lat: -29.3947927, lng: -50.878002}},
+    {title: 'Wish Serrano Resort', location: {lat: -29.3821843, lng: -50.8770579}},
+    {title: 'SuperCarros Gramado', location: {lat: -29.3617065, lng: -50.8593584}},
+    {title: 'Prawer Chocolates', location: {lat: -29.3661833, lng: -50.8617407}},
+    {title: 'Praça das Etnias', location: {lat: -29.3837249, lng: -50.8784937}}
   ];
   var largeInfowindow = new google.maps.InfoWindow();
 
