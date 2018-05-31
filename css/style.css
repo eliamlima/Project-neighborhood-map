@@ -18,10 +18,6 @@ h1 {
   margin: 0 0 10px 0;
   text-align: center;
 }
-#hide-listings,
-#show-listings {
-  width: 48%;
-}
 hr {
   background: #D0D7D9;
   height: 1px;
@@ -45,25 +41,6 @@ hr {
   text-align: left;
   width: 340px;
 }
-#pano {
-  width: 200px;
-  height: 200px;
-}
-#places-search,
-#search-within-time-text {
-  width: 84%;
-}
 .text {
   font-size: 12px;
-}
-#toggle-drawing {
-  width: 27%;
-  position: relative;
-  margin-left: 10px;
-}
-#zoom-to-area-text {
-  width: 70%;
-}
-#zoom-to-area {
-  width: 24%;
 }
