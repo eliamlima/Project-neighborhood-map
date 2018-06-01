@@ -12,7 +12,7 @@ var locations = [
   {title: 'Praça das Etnias', location: {lat: -29.3837249, lng: -50.8784937}}
 ];
 
-function initMap() {
+var initMap = function() {
 
   // Constructor creates a new map - only center and zoom are required.
   map = new google.maps.Map(document.getElementById('map'), {
@@ -21,7 +21,7 @@ function initMap() {
     mapTypeControl: false
   });
 
-  var largeInfowindow = new google.maps.InfoWindow();
+  this.largeInfowindow = new google.maps.InfoWindow();
 
   // Style the markers a bit. This will be our marker icon.
   var defaultIcon = makeMarkerIcon('0091ff');
@@ -59,7 +59,7 @@ function initMap() {
 
   showPlaces();
 
-}
+};
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
@@ -104,15 +104,15 @@ function makeMarkerIcon(markerColor) {
 }
 
 var viewModel = function() {
-  var self = this;
-  self.markersList = ko.observableArray([
-    {title: 'Rua Coberta', location: {lat: -29.378678, lng: -50.8755976}},
-    {title: 'Lago Negro', location: {lat: -29.3947927, lng: -50.878002}},
-    {title: 'Wish Serrano Resort', location: {lat: -29.3821843, lng: -50.8770579}},
-    {title: 'SuperCarros Gramado', location: {lat: -29.3617065, lng: -50.8593584}},
-    {title: 'Prawer Chocolates', location: {lat: -29.3661833, lng: -50.8617407}},
-    {title: 'Praça das Etnias', location: {lat: -29.3837249, lng: -50.8784937}}
-  ]);
+  this.markersList = ko.observableArray(locations);
+  this.listClick = function() {
+    for(var i=0; i < markers.length; i++) {
+      if (markers[i]['title'] == this.title) {
+        google.maps.event.trigger(markers[i], 'click');
+        return;
+      }
+    }
+  };
 }
 
 ko.applyBindings(new viewModel());

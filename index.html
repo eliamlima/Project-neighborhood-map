@@ -10,7 +10,7 @@
         <hr>
         <ul data-bind="foreach: markersList">
           <li>
-            <span data-bind="text: title"></span>
+            <span data-bind="text: title, click: $parent.listClick"></span>
           </li>
         </ul>
       </div>
