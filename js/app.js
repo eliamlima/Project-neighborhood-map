@@ -66,6 +66,7 @@ var initMap = function() {
 function populateInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
   if (infowindow.marker != marker) {
+    get4Square(marker.position.lat(), marker.position.lng());
     // Clear the infowindow content
     infowindow.setContent('');
     infowindow.marker = marker;
@@ -101,6 +102,17 @@ function makeMarkerIcon(markerColor) {
     new google.maps.Point(10, 34),
     new google.maps.Size(21,34));
   return markerImage;
+}
+
+function get4Square(lat, lng) {
+  var url = "https://api.foursquare.com/v2/venues/search?ll=" + lat + "," + lng + "&client_id=R0OIOMNH4ZLSHWDLIN3PIDJHTTJ2MCIMBV2HVOJMUTRZZDD3&client_secret=MFW3BVESBAJ3FDPVOLJHM32ZRIYB5NMV3I1S4BRA1MPQIXUU&v=20180323";
+  $.ajax({
+    url: url,
+    dataType: "jsonp",
+    success: function(response){
+      console.log(response);
+    }
+  });
 }
 
 var viewModel = function() {
