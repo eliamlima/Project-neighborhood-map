@@ -4,12 +4,11 @@ var markers = [];
 
 //These are the locations for selected markers.
 var locations = [
-  {title: 'Rua Coberta', location: {lat: -29.378678, lng: -50.8755976}},
   {title: 'Lago Negro', location: {lat: -29.3947927, lng: -50.878002}},
-  {title: 'Wish Serrano Resort', location: {lat: -29.3821843, lng: -50.8770579}},
-  {title: 'SuperCarros Gramado', location: {lat: -29.3617065, lng: -50.8593584}},
-  {title: 'Prawer Chocolates', location: {lat: -29.3661833, lng: -50.8617407}},
-  {title: 'Praça das Etnias', location: {lat: -29.3837249, lng: -50.8784937}}
+  {title: 'Wish Serrano Resort', location: {lat: -29.382240679150684, lng: -50.874633467997306}},
+  {title: 'SuperCarros Gramado', location: {lat: -29.361701978886533, lng: -50.8571879214574}},
+  {title: 'O Reino do Chocolate', location: {lat: -29.36183274951579, lng: -50.85022836049932}},
+  {title: 'Mini Mundo', location: {lat: -29.384489179859266, lng: -50.875634193776705}}
 ];
 
 var initMap = function() {
@@ -66,11 +65,29 @@ var initMap = function() {
 function populateInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
   if (infowindow.marker != marker) {
-    get4Square(marker.position.lat(), marker.position.lng());
-    // Clear the infowindow content
-    infowindow.setContent('');
     infowindow.marker = marker;
-    infowindow.setContent(marker.title);
+    // get4Square(marker.position.lat(), marker.position.lng());
+
+    var url = "https://api.foursquare.com/v2/venues/search?ll=" + marker.position.lat() + "," + marker.position.lng() + "&client_id=R0OIOMNH4ZLSHWDLIN3PIDJHTTJ2MCIMBV2HVOJMUTRZZDD3&client_secret=MFW3BVESBAJ3FDPVOLJHM32ZRIYB5NMV3I1S4BRA1MPQIXUU&v=20180323";
+
+    // Get VENUE_ID of selected place
+    $.ajax({
+      url: url,
+      dataType: "jsonp",
+      success: function(response){
+        var venue_id = response.response.venues[0].id;
+        var venue_url = "https://api.foursquare.com/v2/venues/" + venue_id + "?client_id=R0OIOMNH4ZLSHWDLIN3PIDJHTTJ2MCIMBV2HVOJMUTRZZDD3&client_secret=MFW3BVESBAJ3FDPVOLJHM32ZRIYB5NMV3I1S4BRA1MPQIXUU&v=20180323";
+        //new request to get details from the 4Square Venue
+        $.ajax({
+          url: venue_url,
+          dataType: "jsonp",
+          success: function(response){
+            infowindow.setContent('<h2>' + marker.title + '</h2><br><p>' + response.response.venue.description + '</p>');
+          }
+        });
+      }
+    });
+
     // Make sure the marker property is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
@@ -102,17 +119,6 @@ function makeMarkerIcon(markerColor) {
     new google.maps.Point(10, 34),
     new google.maps.Size(21,34));
   return markerImage;
-}
-
-function get4Square(lat, lng) {
-  var url = "https://api.foursquare.com/v2/venues/search?ll=" + lat + "," + lng + "&client_id=R0OIOMNH4ZLSHWDLIN3PIDJHTTJ2MCIMBV2HVOJMUTRZZDD3&client_secret=MFW3BVESBAJ3FDPVOLJHM32ZRIYB5NMV3I1S4BRA1MPQIXUU&v=20180323";
-  $.ajax({
-    url: url,
-    dataType: "jsonp",
-    success: function(response){
-      console.log(response);
-    }
-  });
 }
 
 var viewModel = function() {
