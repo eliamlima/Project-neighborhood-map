@@ -66,42 +66,14 @@ function initMap() {
 function populateInfoWindow(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
   if (infowindow.marker != marker) {
-    // Clear the infowindow content to give the streetview time to load.
+    // Clear the infowindow content
     infowindow.setContent('');
     infowindow.marker = marker;
+    infowindow.setContent(marker.title);
     // Make sure the marker property is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
     });
-    var streetViewService = new google.maps.StreetViewService();
-    var radius = 50;
-    // In case the status is OK, which means the pano was found, compute the
-    // position of the streetview image, then calculate the heading, then get a
-    // panorama from that and set the options
-    function getStreetView(data, status) {
-      if (status == google.maps.StreetViewStatus.OK) {
-        var nearStreetViewLocation = data.location.latLng;
-        var heading = google.maps.geometry.spherical.computeHeading(
-          nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-          var panoramaOptions = {
-            position: nearStreetViewLocation,
-            pov: {
-              heading: heading,
-              pitch: 30
-            }
-          };
-        var panorama = new google.maps.StreetViewPanorama(
-          document.getElementById('pano'), panoramaOptions);
-      } else {
-        infowindow.setContent('<div>' + marker.title + '</div>' +
-          '<div>No Street View Found</div>');
-      }
-    }
-    // Use streetview service to get the closest streetview image within
-    // 50 meters of the markers position
-    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-    // Open the infowindow on the correct marker.
     infowindow.open(map, marker);
   }
 }
@@ -133,7 +105,7 @@ function makeMarkerIcon(markerColor) {
 
 var viewModel = function() {
   var self = this;
-  self.markersList = ko.obervableArray([
+  self.markersList = ko.observableArray([
     {title: 'Rua Coberta', location: {lat: -29.378678, lng: -50.8755976}},
     {title: 'Lago Negro', location: {lat: -29.3947927, lng: -50.878002}},
     {title: 'Wish Serrano Resort', location: {lat: -29.3821843, lng: -50.8770579}},
