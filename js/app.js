@@ -3,13 +3,33 @@ var map;
 var markers = [];
 
 //These are the locations for selected markers.
-var locations = [
-  {title: 'Lago Negro', location: {lat: -29.3947927, lng: -50.878002}},
-  {title: 'Wish Serrano Resort', location: {lat: -29.382240679150684, lng: -50.874633467997306}},
-  {title: 'SuperCarros Gramado', location: {lat: -29.361701978886533, lng: -50.8571879214574}},
-  {title: 'O Reino do Chocolate', location: {lat: -29.36183274951579, lng: -50.85022836049932}},
-  {title: 'Mini Mundo', location: {lat: -29.384489179859266, lng: -50.875634193776705}}
-];
+var locations = ko.observableArray([
+  {
+    title: 'Lago Negro',
+    location: {lat: -29.3947927, lng: -50.878002},
+    show: ko.observable(true)
+  },
+  {
+    title: 'Wish Serrano Resort',
+    location: {lat: -29.382240679150684, lng: -50.874633467997306},
+    show: ko.observable(true)
+  },
+  {
+    title: 'SuperCarros Gramado',
+    location: {lat: -29.361701978886533, lng: -50.8571879214574},
+    show: ko.observable(true)
+  },
+  {
+    title: 'O Reino do Chocolate',
+    location: {lat: -29.36183274951579, lng: -50.85022836049932},
+    show: ko.observable(true)
+  },
+  {
+    title: 'Mini Mundo',
+    location: {lat: -29.384489179859266, lng: -50.875634193776705},
+    show: ko.observable(true)
+  }
+]);
 
 var initMap = function() {
 
@@ -28,17 +48,16 @@ var initMap = function() {
   // mouses over the marker.
   var highlightedIcon = makeMarkerIcon('FF0000');
   // The following group uses the location array to create an array of markers on initialize.
-  for (var i = 0; i < locations.length; i++) {
+  for (var i = 0; i < locations().length; i++) {
     // Get the position from the location array.
-    var position = locations[i].location;
-    var title = locations[i].title;
+    var position = locations()[i].location;
+    var title = locations()[i].title;
     // Create a marker per location, and put into markers array.
     var marker = new google.maps.Marker({
       position: position,
       title: title,
       animation: google.maps.Animation.DROP,
-      icon: defaultIcon,
-      id: i
+      icon: defaultIcon
     });
     // Push the marker to our array of markers.
     markers.push(marker);
@@ -54,6 +73,8 @@ var initMap = function() {
     marker.addListener('mouseout', function() {
       this.setIcon(defaultIcon);
     });
+
+    markers[i].marker = marker;
   }
 
   showPlaces();
@@ -122,12 +143,29 @@ function makeMarkerIcon(markerColor) {
 }
 
 var viewModel = function() {
-  this.markersList = ko.observableArray(locations);
+  self = this;
+  self.query = ko.observable("");
+
   this.listClick = function() {
     for(var i=0; i < markers.length; i++) {
       if (markers[i]['title'] == this.title) {
         google.maps.event.trigger(markers[i], 'click');
         return;
+      }
+    }
+  };
+
+  this.filterButton = function() {
+    console.log(self.query());
+    var q = self.query().toLowerCase();
+
+    for(var i=0; i < locations().length; i++){
+      if(locations()[i].title.toLowerCase().indexOf(q) >= 0) {
+        locations()[i].show(true);
+        markers[i].setVisible(true);
+      } else {
+        locations()[i].show(false);
+        markers[i].setVisible(false);
       }
     }
   };

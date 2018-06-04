@@ -8,9 +8,12 @@
       <div class="box">
         <h1>Best Places</h1>
         <hr>
-        <ul data-bind="foreach: markersList">
+        <input type='text' data-bind="textInput: query"></input>
+        <button data-bind="click: filterButton">Filter</button>
+        <hr>
+        <ul data-bind="foreach: locations">
           <li>
-            <span data-bind="text: title, click: $parent.listClick"></span>
+            <span data-bind="text: title, visible: show, click: $parent.listClick"></span>
           </li>
         </ul>
       </div>
