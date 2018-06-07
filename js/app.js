@@ -47,6 +47,8 @@ var initMap = function() {
   // Create a "highlighted location" marker color for when the user
   // mouses over the marker.
   var highlightedIcon = makeMarkerIcon('FF0000');
+  //Style the marker when clicked
+  var clickedIcon = makeMarkerIcon('FFE500');
   // The following group uses the location array to create an array of markers on initialize.
   for (var i = 0; i < locations().length; i++) {
     // Get the position from the location array.
@@ -59,22 +61,40 @@ var initMap = function() {
       animation: google.maps.Animation.DROP,
       icon: defaultIcon
     });
+
+    marker.clicked = false;
+
+    function resetMarkers() {
+      console.log("reset");
+      markers.forEach(function(m){
+        if(m.clicked) {
+          m.clicked = false;
+          m.setIcon(defaultIcon);
+        }
+      });
+    }
+
     // Push the marker to our array of markers.
     markers.push(marker);
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
+      resetMarkers();
+      this.clicked = true;
       populateInfoWindow(this, largeInfowindow);
+      this.setIcon(clickedIcon);
     });
     // Two event listeners - one for mouseover, one for mouseout,
     // to change the colors back and forth.
     marker.addListener('mouseover', function() {
-      this.setIcon(highlightedIcon);
+      if( this.clicked === false) {
+        this.setIcon(highlightedIcon);
+      }
     });
     marker.addListener('mouseout', function() {
-      this.setIcon(defaultIcon);
+      if( this.clicked === false) {
+        this.setIcon(defaultIcon);
+      }
     });
-
-    markers[i].marker = marker;
   }
 
   showPlaces();
@@ -111,6 +131,8 @@ function populateInfoWindow(marker, infowindow) {
 
     // Make sure the marker property is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function() {
+      marker.clicked = false;
+      marker.setIcon(makeMarkerIcon('0091ff'));
       infowindow.marker = null;
     });
     infowindow.open(map, marker);
