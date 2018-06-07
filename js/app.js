@@ -40,7 +40,7 @@ var initMap = function() {
     mapTypeControl: false
   });
 
-  this.largeInfowindow = new google.maps.InfoWindow();
+  this.largeInfowindow = new google.maps.InfoWindow({maxWidth: 150});
 
   // Style the markers a bit. This will be our marker icon.
   var defaultIcon = makeMarkerIcon('0091ff');
@@ -78,6 +78,7 @@ var initMap = function() {
     markers.push(marker);
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
+      map.setCenter(this.getPosition());
       resetMarkers();
       this.clicked = true;
       populateInfoWindow(this, largeInfowindow);
@@ -123,7 +124,7 @@ function populateInfoWindow(marker, infowindow) {
           url: venue_url,
           dataType: "jsonp",
           success: function(response){
-            infowindow.setContent('<h2>' + marker.title + '</h2><br><p>' + response.response.venue.description + '</p>');
+            infowindow.setContent('<h2>' + marker.title + '</h2><br><p>' + response.response.venue.description + '</p><br><b> by FourSquare </b>');
           }
         });
       }
