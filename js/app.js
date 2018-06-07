@@ -125,8 +125,14 @@ function populateInfoWindow(marker, infowindow) {
           dataType: "jsonp",
           success: function(response){
             infowindow.setContent('<h2>' + marker.title + '</h2><br><p>' + response.response.venue.description + '</p><br><b> by FourSquare </b>');
+          },
+          error: function(){
+            infowindow.setContent("Nao foi possivel carregar a informacao");
           }
         });
+      },
+      error: function(){
+        infowindow.setContent("Nao foi possivel carregar a informacao");
       }
     });
 
