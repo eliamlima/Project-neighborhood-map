@@ -4,6 +4,7 @@ This project shows at least 5 places on a map as markers, that I like in the cit
 REQUISITS:
 - Download the project in your preferred folder.
 - Just load the index.html in your browser, preferrebly on Chrome.
+- The app uses Google Maps and Foursquare API.
 
 HOW IT WORKS:
 - Default and Initial view: A list of all places on the left panel, and the map centered in Gramado, shows the markers from those places.
